@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme tokens as CSS variables (mirror tailwind theme colors) so inline
+   styles can use var(--accent) etc. exactly like the original HTML. */
+:root {
+  --bg: #fbfaf7;
+  --card: #ffffff;
+  --soft: #f5efe6;
+  --ink: #28231d;
+  --muted: #948c81;
+  --line: #ece6dc;
+  --accent: #e4572e;
+  --accentSoft: rgba(228, 87, 46, 0.09);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--ink);
+}
+
+/* Hide scrollbars for horizontal/vertical scroll regions (matches .hs-scroll). */
+.hs-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.hs-scroll {
+  scrollbar-width: none;
+}
+
+/* Native select inherits font. */
+select {
+  font-family: inherit;
+}
+
+button {
+  font-family: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+}
