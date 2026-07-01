@@ -35,7 +35,15 @@ const INPUT_CLASS =
   'focus:border-ink transition-colors'
 
 // -- one order-summary line -------------------------------------------------
-function OrderItemRow({ item, last }: { item: CartItem; last: boolean }) {
+function OrderItemRow({
+  item,
+  last,
+  onRemove,
+}: {
+  item: CartItem
+  last: boolean
+  onRemove: () => void
+}) {
   const product = itemProduct(item)
   if (!product) return null
   const thumb = product.images[0]
@@ -57,6 +65,14 @@ function OrderItemRow({ item, last }: { item: CartItem; last: boolean }) {
         </div>
       </div>
       <div className="text-[13px] font-extrabold">{won(lineTotal)}</div>
+      <button
+        type="button"
+        onClick={onRemove}
+        aria-label="주문에서 빼기"
+        className="flex-none w-7 h-7 -mr-1 flex items-center justify-center text-muted hover:text-ink text-[15px] leading-none cursor-pointer"
+      >
+        ✕
+      </button>
     </div>
   )
 }
@@ -107,6 +123,7 @@ export default function Checkout() {
   const items = useCart((s) => s.items)
   const setLastOrder = useCart((s) => s.setLastOrder)
   const clear = useCart((s) => s.clear)
+  const remove = useCart((s) => s.remove)
 
   const [form, setForm] = useState<OrderForm>({
     name: '',
@@ -240,9 +257,20 @@ export default function Checkout() {
         {/* 주문 상품 */}
         <div className="text-[15px] font-extrabold mt-[26px] mb-3">주문 상품</div>
         <div className="bg-card border border-line rounded-[18px] px-[14px] py-1.5">
-          {items.map((item, i) => (
-            <OrderItemRow key={keyOf(item)} item={item} last={i === items.length - 1} />
-          ))}
+          {items.length === 0 ? (
+            <div className="py-6 text-center text-[13px] text-muted">
+              주문할 상품이 없어요
+            </div>
+          ) : (
+            items.map((item, i) => (
+              <OrderItemRow
+                key={keyOf(item)}
+                item={item}
+                last={i === items.length - 1}
+                onRemove={() => remove(keyOf(item))}
+              />
+            ))
+          )}
         </div>
 
         {/* 결제 수단 */}
